@@ -7,6 +7,7 @@ describe('JWT then Todos', () => {
   let app: INestApplication;
   let jwtToken: string;
   let todoId: number;
+  let todoContent: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -54,6 +55,7 @@ describe('JWT then Todos', () => {
     expect(response.body.content).toBe('My first todo');
 
     todoId = response.body.id;
+    todoContent = response.body.content;
   });
 
   /**
@@ -77,6 +79,7 @@ describe('JWT then Todos', () => {
       .patch(`/todos/${todoId}`)
       .set('Authorization', `Bearer ${jwtToken}`)
       .send({
+        content: todoContent,
         checked: true,
       })
       .expect(200);
