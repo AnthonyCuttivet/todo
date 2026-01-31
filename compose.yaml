@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: app_postgres
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_pwd
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  backend:
+    image: node:20
+    container_name: app_backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    command: sh -c "npm install && npm run start:dev"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+  frontend:
+    image: node:20
+    container_name: app_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+volumes:
+  postgres_data:
