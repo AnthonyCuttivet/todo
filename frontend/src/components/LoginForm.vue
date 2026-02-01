@@ -13,7 +13,7 @@ async function handleLogin() {
   try {
     await authStore.login({ username: username.value, password: password.value });
   } catch (e) {
-    error.value = 'Identifiants incorrects';
+    error.value = 'Wrong credientials';
   }
 }
 </script>

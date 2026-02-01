@@ -27,27 +27,27 @@ async function addTodo() {
 <template>
   <div class="todo-container">
     <div class="header">
-      <h1>Mes Todos</h1>
-      <button @click="authStore.logout" class="btn-logout">Déconnexion</button>
+      <h1>My #TODOs</h1>
+      <button @click="authStore.logout" class="btn-logout">Logout</button>
     </div>
 
     <form @submit.prevent="addTodo" class="add-todo">
       <input
         v-model="newTodoContent"
-        placeholder="Nouveau todo..."
+        placeholder="New #TODO..."
         class="input"
       />
-      <button type="submit" class="btn-add">Ajouter</button>
+      <button type="submit" class="btn-add">Add</button>
     </form>
 
-    <div v-if="todoStore.loading" class="loading">Chargement...</div>
+    <div v-if="todoStore.loading" class="loading">Loading...</div>
 
     <div v-else-if="todoStore.error" class="error">
       {{ todoStore.error }}
     </div>
 
     <div v-else-if="todoStore.sortedTodos.length === 0" class="empty">
-      Aucun todo pour le moment
+      No #TODO right now
     </div>
 
     <div v-else class="todo-list">

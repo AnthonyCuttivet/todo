@@ -23,7 +23,7 @@ export const useTodoStore = defineStore('todo', () => {
     try {
       todos.value = await todoService.getAll();
     } catch (e) {
-      error.value = 'Erreur lors du chargement des todos';
+      error.value = 'Cannnot load #TODOs right now';
       console.error(e);
     } finally {
       loading.value = false;
