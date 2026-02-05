@@ -15,12 +15,12 @@ export class CreateTodoDTO
 {
     @IsString()
     @IsNotEmpty()
-    @MaxLength(TODO_CONTENT_MAX_LENGTH)
+    @MaxLength(TODO_TITLE_MAX_LENGTH)
     title:string;
 
     @IsString()
     @IsNotEmpty()
-    @MaxLength(TODO_TITLE_MAX_LENGTH)
+    @MaxLength(TODO_CONTENT_MAX_LENGTH)
     content: string;
 
     @IsEnum(TodoPriority)
@@ -39,12 +39,12 @@ export class UpdateTodoDTO
 {
     @IsString()
     @IsNotEmpty()
-    @MaxLength(TODO_CONTENT_MAX_LENGTH)
+    @MaxLength(TODO_TITLE_MAX_LENGTH)
     title:string;
 
     @IsString()
     @IsNotEmpty()
-    @MaxLength(TODO_TITLE_MAX_LENGTH)
+    @MaxLength(TODO_CONTENT_MAX_LENGTH)
     content: string;
 
     @IsEnum(TodoPriority)
