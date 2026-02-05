@@ -19,8 +19,8 @@
  docker compose up
 ```
 #### 🔨 Initialisation
+##### Note : L'initialisation n'est nécessaire que pour le premier démarrage
 ```bash
-# Note : L'initialisation n'est nécessaire que pour le premier démarrage
 docker compose exec backend npm run setup
 ```
 
