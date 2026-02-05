@@ -4,8 +4,11 @@
 ## 📦 Installation
 
 > **Prérequis:**
+> 
 > Docker (\>= 24) - https://docs.docker.com/engine/install/
+> 
 > Docker Compose - https://docs.docker.com/compose/
+> 
 > Node.js (\>= 18) - https://nodejs.org/en
 
 1. Téléchargez ou clonez ce repo : https://github.com/AnthonyCuttivet/todo
