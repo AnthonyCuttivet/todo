@@ -4,26 +4,53 @@ import { todoService } from '../services/todoService';
 import type { Todo, CreateTodoDto, UpdateTodoDto } from '../types';
 import { toast } from 'vue3-toastify';
 
+export type SortOption = 'default' | 'priority' | 'executionDate';
+
 export const useTodoStore = defineStore('todo', () => {
   const todos = ref<Todo[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
   const editingTodo = ref<Todo | null>(null);
+  const sortBy = ref<SortOption>('default');
 
-  const compliments:string[] = ['BG !', 'Solide !', 'Tié un tigre !', 'Félicitations !', 'Carré dans l\'axe !', 'Franchement bravo !', 'Fantastique !', 'Splendide !', 'GG WP !'];
+  const priorityOrder = { high: 3, medium: 2, low: 1 };
+  const compliments:string[] = ['BG !', 'Solide !', 'Bien joué !', 'Parfait !', 'Tié un tigre !', 'Félicitations !', 'Carré !', 'Franchement bravo !', 'Fantastique !', 'Splendide !', 'GG WP !', 'Nickel !', 'Pour l\'Alliance !'];
+
+  const sortedTodos = computed(() => {
+    const todosCopy = [...todos.value];
+
+    if (sortBy.value === 'priority') {
+      return todosCopy.sort((a, b) => {
+        if (a.checked !== b.checked) return a.checked ? 1 : -1; // Unchecked first
+        return priorityOrder[b.priority] - priorityOrder[a.priority]; // Then by desc priority
+      });
+    }
+
+    if (sortBy.value === 'executionDate') {
+      return todosCopy.sort((a, b) => {
+        if (a.checked !== b.checked) return a.checked ? 1 : -1;
+
+        if (!a.executionDate && !b.executionDate) return 0;
+        if (!a.executionDate) return 1;
+        if (!b.executionDate) return -1;
+
+        return new Date(a.executionDate).getTime() - new Date(b.executionDate).getTime();
+      });
+    }
+
+    return todosCopy.sort((a, b) => {
+      if (a.checked !== b.checked) return a.checked ? 1 : -1;
+      return a.id - b.id;
+    });
+  });
+
+  function setSortBy(option: SortOption) {
+    sortBy.value = option;
+  }
 
   function setEditingTodo(todo: Todo | null) {
     editingTodo.value = todo;
   }
-
-  const sortedTodos = computed(() => {
-    return [...todos.value].sort((a, b) => {
-      if (a.checked !== b.checked) {
-        return a.checked ? 1 : -1;
-      }
-      return a.id - b.id;
-    });
-  });
 
   async function fetchTodos() {
     loading.value = true;
@@ -99,6 +126,7 @@ export const useTodoStore = defineStore('todo', () => {
   return {
     todos,
     sortedTodos,
+    sortBy,
     loading,
     error,
     editingTodo,
@@ -107,5 +135,6 @@ export const useTodoStore = defineStore('todo', () => {
     updateTodo,
     deleteTodo,
     setEditingTodo,
+    setSortBy,
   };
 });

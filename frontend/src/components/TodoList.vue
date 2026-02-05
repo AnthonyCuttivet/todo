@@ -96,7 +96,7 @@ function cancelAdd() {
           <input
             v-model="newTodoTitle"
             @focus="isFormExpanded = true"
-            placeholder="#TODO - Titre"
+            placeholder="Ajouter un #TODO"
             class="input"
             :class="{ 'input-error': errors.title }"
             :maxlength="TODO_TITLE_MAX_LENGTH"
@@ -115,7 +115,7 @@ function cancelAdd() {
             <div class="input-wrapper">
               <textarea
                 v-model="newTodoContent"
-                placeholder="#TODO - Description"
+                placeholder="Ajouter une description"
                 class="input textarea"
                 :class="{ 'input-error': errors.content }"
                 rows="4"
@@ -176,6 +176,27 @@ function cancelAdd() {
       </Transition>
     </form>
 
+    <div v-if="todoStore.todos.length > 0" class="sort-controls">
+      <button
+        @click="todoStore.setSortBy('default')"
+        :class="['sort-btn', { active: todoStore.sortBy === 'default' }]"
+      >
+        Défaut
+      </button>
+      <button
+        @click="todoStore.setSortBy('priority')"
+        :class="['sort-btn', { active: todoStore.sortBy === 'priority' }]"
+      >
+        Priorité
+      </button>
+      <button
+        @click="todoStore.setSortBy('executionDate')"
+        :class="['sort-btn', { active: todoStore.sortBy === 'executionDate' }]"
+      >
+        Date limite
+      </button>
+    </div>
+
     <div v-if="todoStore.loading" class="loading">Loading...</div>
 
     <div v-else-if="todoStore.error" class="error">
@@ -183,7 +204,7 @@ function cancelAdd() {
     </div>
 
     <div v-else-if="todoStore.sortedTodos.length === 0" class="empty">
-      Aucun #TODO pour le moment
+      Quel est votre prochain #TODO ?
     </div>
 
     <div v-else class="todo-list">
@@ -457,6 +478,43 @@ function cancelAdd() {
   border: 1px solid #b183ed;
   color: #ffffff;
   min-width: 100%;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 12px 0;
+}
+
+.sort-label {
+  color: #b183ed;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.sort-btn {
+  padding: 8px 16px;
+  background: #3f3f3f;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  background: #4a4a4a;
+  border-color: #b183ed;
+}
+
+.sort-btn.active {
+  background: #b183ed;
+  border-color: #b183ed;
+  color: white;
+  font-weight: 600;
 }
 
 .todo-list {

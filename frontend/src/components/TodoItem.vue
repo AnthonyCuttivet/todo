@@ -38,7 +38,6 @@ async function deleteTodo() {
       <div class="todo-header">
         <h3 class="title">{{ todo.title }}</h3>
         <span class="priority-badge" :class="`priority-${todo.priority}`">
-          {{ todo.priority === 'low' ? '🟢' : todo.priority === 'medium' ? '🟡' : '🔴' }}
           {{ todo.priority === 'low' ? 'Basse' : todo.priority === 'medium' ? 'Moyenne' : 'Haute' }}
         </span>
       </div>
@@ -47,10 +46,10 @@ async function deleteTodo() {
 
       <div class="todo-footer">
         <span class="date-info">
-          📅 Créé le {{ new Date(todo.createdAt).toLocaleDateString() }}
+          Créé le {{ new Date(todo.createdAt).toLocaleDateString() }}
         </span>
         <span class="executionDate" v-if="todo.executionDate">
-          ⏰ À faire le {{ new Date(todo.executionDate).toLocaleDateString() }}
+          À faire le {{ new Date(todo.executionDate).toLocaleDateString() }}
         </span>
       </div>
     </div>
