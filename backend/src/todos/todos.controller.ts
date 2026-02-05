@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post, UseGuards } from "@nestjs/common";
 import { TodosService } from "./todos.service";
-import { CreateTodoDTO, UpdateTodoDTO } from "./dto/create-todo.dto";
+import { CreateTodoDTO, UpdateTodoDTO } from "./dto/todo.dto";
 import { Todo } from "src/database/entities/todo.entity";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
@@ -24,9 +24,8 @@ export class TodosController {
 
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
-    updateTodo(@Param('id') id:number, @Body() dto:UpdateTodoDTO) : Promise<Todo>
+    updateTodo(@Param('id', ParseIntPipe) id:number, @Body() dto:UpdateTodoDTO) : Promise<Todo>
     {
-        console.log(id, dto);
         return this.todosService.updateTodo(id, dto);
     }
 

@@ -7,40 +7,26 @@ const props = defineProps<{ todo: Todo }>();
 const todoStore = useTodoStore();
 
 const isEditing = ref(false);
-const editContent = ref(props.todo.content);
 
 async function toggleCheck() {
-  const dto:UpdateTodoDto = {content:props.todo.content, checked:!props.todo.checked};
+  const dto:UpdateTodoDto = {title:props.todo.title, content:props.todo.content, priority:props.todo.priority, executionDate:props.todo.executionDate, checked:!props.todo.checked};
   await todoStore.updateTodo(props.todo.id, dto);
 }
 
 function startEdit() {
-  isEditing.value = true;
-  editContent.value = props.todo.content;
-}
-
-async function saveEdit() {
-  if (editContent.value.trim()) {
-    const dto:UpdateTodoDto = {content:editContent.value, checked:props.todo.checked};
-    await todoStore.updateTodo(props.todo.id, dto);
-    isEditing.value = false;
-  }
-}
-
-function cancelEdit() {
-  isEditing.value = false;
-  editContent.value = props.todo.content;
+  todoStore.setEditingTodo(props.todo);
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 async function deleteTodo() {
-  if (confirm('Are you SURE FOR SHORE you want to delete this TODO ?')) {
+  if (confirm('Etes vous sûr de vouloir supprimer ce #TODO ?')) {
     await todoStore.deleteTodo(props.todo.id);
   }
 }
 </script>
 
 <template>
-  <div class="todo-item" :class="{ completed: todo.checked }">
+  <div class="todo-item" :class="{ completed: todo.checked, editing: todoStore.editingTodo?.id === todo.id }">
     <input
       type="checkbox"
       :checked="todo.checked"
@@ -49,23 +35,15 @@ async function deleteTodo() {
     />
 
     <div v-if="!isEditing" class="todo-content" @dblclick="startEdit">
+      <span class="title">{{ todo.title }}</span>
       <span class="content">{{ todo.content }}</span>
+      <span class="priority">{{ todo.priority }}</span>
+      <span class="executionDate" v-if="todo.executionDate">{{ new Date(todo.executionDate).toLocaleDateString() }}</span>
       <span class="date">{{ new Date(todo.createdAt).toLocaleDateString() }}</span>
     </div>
 
-    <input
-      v-else
-      v-model="editContent"
-      @keyup.enter="saveEdit"
-      @keyup.esc="cancelEdit"
-      class="edit-input"
-      autofocus
-    />
-
     <div class="actions">
       <button v-if="!isEditing" @click="startEdit" class="btn-edit">✏️</button>
-      <button v-if="isEditing" @click="saveEdit" class="btn-save">✓</button>
-      <button v-if="isEditing" @click="cancelEdit" class="btn-cancel">✗</button>
       <button @click="deleteTodo" class="btn-delete">🗑️</button>
     </div>
   </div>
@@ -93,6 +71,10 @@ async function deleteTodo() {
 
 .todo-item.completed .content {
   text-decoration: line-through;
+}
+
+.todo-item.editing {
+  border: 2px dashed #d6850a;
 }
 
 .checkbox {
@@ -123,7 +105,7 @@ async function deleteTodo() {
 .edit-input {
   flex: 1;
   padding: 8px;
-  border: 2px solid #42b883;
+  border: 2px solid #b84242;
   border-radius: 4px;
   font-size: 16px;
 }

@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { CreateTodoDTO, UpdateTodoDTO } from "./dto/create-todo.dto";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { CreateTodoDTO, UpdateTodoDTO } from "./dto/todo.dto";
 import { Todo } from "src/database/entities/todo.entity";
 import { TodoRepository } from "src/database/repositories/todo.repository";
 
@@ -14,7 +14,29 @@ export class TodosService {
 
     async createTodo(dto: CreateTodoDTO): Promise<Todo>
     {
-        return this.todoRepository.createTodo({ content: dto.content, checked: dto.checked });
+        try
+        {
+            const todo = this.todoRepository.createTodo({
+                title: dto.title,
+                content: dto.content,
+                priority: dto.priority,
+                executionDate: dto.executionDate,
+                checked: dto.checked
+            });
+
+            return todo;
+        }
+        catch(err)
+        {
+            if(err.name === "ValidationError")
+            {
+                throw new BadRequestException(err.message);
+            }
+
+            console.error(err);
+
+            throw new InternalServerErrorException('Could not create todo');
+        }
     }
 
     async updateTodo(id:number, dto:UpdateTodoDTO) : Promise<Todo>

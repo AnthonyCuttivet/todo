@@ -21,7 +21,8 @@
     "mikro": "mikro-orm",
     "mikro:create": "mikro-orm migration:create",
     "mikro:up": "mikro-orm migration:up",
-    "mikro:down": "mikro-orm migration:down"
+    "mikro:down": "mikro-orm migration:down",
+    "seed": "ts-node src/seed.ts"
   },
   "dependencies": {
     "@mikro-orm/core": "^6.6.5",

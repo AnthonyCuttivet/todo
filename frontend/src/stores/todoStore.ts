@@ -7,6 +7,11 @@ export const useTodoStore = defineStore('todo', () => {
   const todos = ref<Todo[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const editingTodo = ref<Todo | null>(null);
+
+  function setEditingTodo(todo: Todo | null) {
+    editingTodo.value = todo;
+  }
 
   const sortedTodos = computed(() => {
     return [...todos.value].sort((a, b) => {
@@ -53,9 +58,11 @@ export const useTodoStore = defineStore('todo', () => {
     sortedTodos,
     loading,
     error,
+    editingTodo,
     fetchTodos,
     addTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    setEditingTodo,
   };
 });
