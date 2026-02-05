@@ -1,5 +1,8 @@
 import { ref } from "vue";
 
+export const TODO_TITLE_MAX_LENGTH:number = 49;
+export const TODO_CONTENT_MAX_LENGTH:number = 255;
+
 export function useTodoValidation() {
     const errors = ref<{ title?: string; content?: string }>({});
 
@@ -7,19 +10,19 @@ export function useTodoValidation() {
       errors.value = {};
 
       if (!title.trim()) {
-        errors.value.title = 'Title is required';
+        errors.value.title = 'Un titre est requis';
         return false;
       }
-      if (title.length > 50) {
-        errors.value.title = 'Title must be under 50 characters';
+      if (title.length > TODO_TITLE_MAX_LENGTH) {
+        errors.value.title = 'Le titre doit faire au maximum ' + TODO_TITLE_MAX_LENGTH + ' caractères';
         return false;
       }
       if (!content.trim()) {
-        errors.value.content = 'Content is required';
+        errors.value.content = 'Un contenu est requis';
         return false;
       }
-      if (content.length > 256) {
-        errors.value.content = 'Content must be under 256 characters';
+      if (content.length > TODO_CONTENT_MAX_LENGTH) {
+        errors.value.content = 'Le contenu doit faire au maximum ' + TODO_CONTENT_MAX_LENGTH + ' caractères';
         return false;
       }
 

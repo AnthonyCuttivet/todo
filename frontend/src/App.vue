@@ -3,6 +3,7 @@ import { useAuthStore } from './stores/authStore';
 import LoginForm from './components/LoginForm.vue';
 import TodoList from './components/TodoList.vue';
 
+
 const authStore = useAuthStore();
 </script>
 

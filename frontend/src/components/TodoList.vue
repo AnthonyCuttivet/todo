@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { useTodoStore } from '../stores/todoStore';
 import { useAuthStore } from '../stores/authStore';
 import TodoItem from './TodoItem.vue';
-import { useTodoValidation } from '../composables/useTodoValidation';
+import { TODO_CONTENT_MAX_LENGTH, TODO_TITLE_MAX_LENGTH, useTodoValidation } from '../composables/useTodoValidation';
 import type { TodoPriority } from '../types';
 
 const todoStore = useTodoStore();
@@ -18,8 +18,7 @@ const newTodoContent = ref('');
 const newTodoPriority = ref<TodoPriority>('low');
 const newTodoExecutionDate = ref<string>('');
 
-const TODO_TITLE_MAX_LENGTH:number = 49;
-const TODO_CONTENT_MAX_LENGTH:number = 255;
+
 
 onMounted(() => {
   todoStore.fetchTodos();

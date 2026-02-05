@@ -2,21 +2,29 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { authService } from '../services/authService';
 import type { LoginCredentials } from '../types';
+import { toast } from 'vue3-toastify';
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<{ username: number; password: string } | null>(null);
   const isAuthenticated = ref(authService.isAuthenticated());
 
   async function login(credentials: LoginCredentials) {
-    const response = await authService.login(credentials);
-    isAuthenticated.value = true;
+    try
+    {
+      const response = await authService.login(credentials);
+      isAuthenticated.value = true;
+      toast.success('Connecté');
+    }
+    catch(err)
+    {
+      toast.error('Identifiants incorrects');
+    }
+
   }
 
   function logout() {
     authService.logout();
-    user.value = null;
     isAuthenticated.value = false;
   }
 
-  return { user, isAuthenticated, login, logout };
+  return { isAuthenticated, login, logout };
 });
