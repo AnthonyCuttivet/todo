@@ -1,5 +1,5 @@
 
-# Kresus x Anthony CUTTIVET Todo app
+# Vue3 + Nest Todo app
 
 ## 📦 Installation
 
@@ -29,8 +29,8 @@ Deux comptes utilisateur sont disponibles :
 
 | Identifiant | Mot de passe |
 |---------|-------------|
-| toto@kresus.eu | test |
-| antho@kresus.eu | test |
+| one@mail.com | test |
+| two@mail.com | test |
 
 ## 🗿 Auteur
 
