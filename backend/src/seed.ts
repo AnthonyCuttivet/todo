@@ -8,8 +8,8 @@ async function seed() {
   const orm = await MikroORM.init(mikroOrmConfig);
   const em:EntityManager = orm.em.fork();
 
-  await createUser(em, 'toto@kresus.eu', 'test');
-  await createUser(em, 'antho@kresus.eu', 'test');
+  await createUser(em, 'one@mail.com', 'test');
+  await createUser(em, 'two@mail.com', 'test');
 
   await orm.close(true);
 }

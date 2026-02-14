@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { title } from 'process';
 
 describe('JWT then Todos', () => {
   let app: INestApplication;
@@ -29,8 +30,8 @@ describe('JWT then Todos', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        username: 'aled',
-        password: 'travail',
+        username: 'toto@kresus.eu',
+        password: 'test',
       })
       .expect(201);
 
@@ -46,16 +47,20 @@ describe('JWT then Todos', () => {
       .post('/todos')
       .set('Authorization', `Bearer ${jwtToken}`)
       .send({
-        content: 'My first todo',
+        title: 'My first todo',
+        content: 'My first todo content',
+        priority: 'medium',
         checked: false,
       })
       .expect(201);
 
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.content).toBe('My first todo');
+      expect(response.body).toHaveProperty('id');
+      expect(response.body.title).toBe('My first todo');
+      expect(response.body.content).toBe('My first todo content');
+      expect(response.body.priority).toBe('medium');
+      expect(response.body.checked).toBe(false);
 
-    todoId = response.body.id;
-    todoContent = response.body.content;
+      todoId = response.body.id;
   });
 
   /**
@@ -79,7 +84,9 @@ describe('JWT then Todos', () => {
       .patch(`/todos/${todoId}`)
       .set('Authorization', `Bearer ${jwtToken}`)
       .send({
-        content: todoContent,
+        title: 'My first todo',
+        content: 'My first todo content',
+        priority: 'medium',
         checked: true,
       })
       .expect(200);
